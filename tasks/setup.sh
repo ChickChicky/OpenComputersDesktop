@@ -16,12 +16,23 @@ PLAT=${1-$OSTYPE}
     LUA_SOURCE=lua-$LUA_VER
     LUA_SOURCE_COMPRESSED=$LUA_SOURCE.tar.gz
 
-    curl -R -O https://www.lua.org/ftp/$LUA_SOURCE_COMPRESSED
+    wget https://www.lua.org/ftp/$LUA_SOURCE_COMPRESSED
     tar zxf $LUA_SOURCE_COMPRESSED
 
     (
         cd $LUA_SOURCE
         make $LUA_PLATFORM test
+    )
+
+)
+
+( # Raylib installation
+
+    git clone https://github.com/raysan5/raylib.git
+
+    (
+        cd ./raylib/src
+        make PLATFORM=PLATFORM_DESKTOP
     )
 
 )
