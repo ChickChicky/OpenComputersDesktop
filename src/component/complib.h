@@ -3,6 +3,8 @@
 
 #include "common.h"
 
+#define COMP_COMPLIST_MT "OCD::ComponentList"
+
 struct comp_addr {
     uint64_t low;
     uint64_t high;
@@ -11,7 +13,7 @@ struct comp_addr {
 typedef struct comp_addr comp_addr;
 
 /* Loads the global component lib (with all the single component modules) into the Lua environment */
-void ocd_open_complib(lua_State* L);
+int ocd_open_complib(lua_State* L);
 
 /* Generates a new random component address */
 comp_addr comp_addr_new(void);

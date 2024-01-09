@@ -6,6 +6,7 @@
 #define LUA_OC_COMPAT 1
 
 static const luaL_Reg ocdLibs[] = {
+    {"component", ocd_open_complib},
     {"bit32", luaopen_bit32},
     {NULL, NULL}  
 };

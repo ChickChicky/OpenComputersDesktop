@@ -3,6 +3,7 @@
 
 #include "common.h"
 
+#define COMP_GPU_MT "OCD::Component::GPU"
 #define GPU_N_BUFFERS (1<<16)
 
 struct gpu_buffer {
@@ -23,7 +24,7 @@ typedef struct comp_gpu comp_gpu;
 
 int ocd_open_comp_gpu(lua_State* L);
 
-void ocd_push_gpu(lua_State* L, comp_gpu* gpu);
+int ocd_push_gpu(lua_State* L, comp_gpu* gpu);
 
 gpu_buffer* gpu_buffer_new(uint16_t width, uint16_t height);
 void gpu_buffer_free(gpu_buffer* buffer);
