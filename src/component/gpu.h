@@ -3,7 +3,6 @@
 
 #include "common.h"
 
-#define COMP_GPU_MT "OCD::Component::GPU"
 #define GPU_N_BUFFERS (1<<16)
 
 struct gpu_buffer {

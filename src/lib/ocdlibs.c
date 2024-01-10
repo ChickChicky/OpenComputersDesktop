@@ -28,7 +28,6 @@ static void ocd_remove_field(lua_State* L, const char* mod, const char* name) {
 
 void ocd_openlibs(lua_State* L) {
     luaL_openlibs(L);
-    ocd_open_complib(L);
 
     for (const luaL_Reg* lib = ocdLibs; lib->func; lib++) {
         luaL_requiref(L, lib->name, lib->func, 1);

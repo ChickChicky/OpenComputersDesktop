@@ -3,8 +3,12 @@
 #include "ocdlibs.h"
 #include "raylib.h"
 
+comp_env* ENV = NULL;
+
 int main(int argc, char** argv) {
     (void) argc; (void) argv;
+
+    ENV = comp_env_new();
 
     lua_State* L = luaL_newstate();
     ocd_openlibs(L);
