@@ -1,6 +1,6 @@
 #include "gpu.h"
 
-int ocd_push_gpu(lua_State* L, comp_gpu* gpu) {
+int ocd_CL_push_gpu(lua_State* L, comp_gpu* gpu) {
     comp_gpu** lua_gpu = (comp_gpu**)lua_newuserdata(L,sizeof(comp_gpu*));
     *lua_gpu = gpu;
     luaL_getmetatable(L,COMP_GPU_MT);

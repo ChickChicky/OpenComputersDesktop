@@ -11,12 +11,14 @@ static const luaL_Reg ocdLibs[] = {
     {NULL, NULL}  
 };
 
+// Small utility to remove global Lua variables (mostly modules)
 static void ocd_remove_global(lua_State* L, const char* mod) {
     lua_pushnil(L);
     lua_setglobal(L, mod);
     lua_pop(L,-1);
 }
 
+// Small utility to remove fields inside global Lua variables (mostly modules)
 static void ocd_remove_field(lua_State* L, const char* mod, const char* name) {
     lua_getglobal(L, mod);
     lua_pushnil(L);

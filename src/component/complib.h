@@ -10,6 +10,7 @@ struct comp_addr {
     uint64_t high;
 };
 
+/* Stores a component address as a 128 bit integer */
 typedef struct comp_addr comp_addr;
 
 /* Loads the global component lib (with all the single component modules) into the Lua environment */
