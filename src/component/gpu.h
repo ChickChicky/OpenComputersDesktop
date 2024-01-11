@@ -16,6 +16,7 @@ typedef struct gpu_buffer gpu_buffer;
 
 struct comp_gpu {
     comp_addr address;
+    comp_method_reg* vtable;
     comp_addr bound;
     gpu_buffer* buffers[GPU_N_BUFFERS];
 };

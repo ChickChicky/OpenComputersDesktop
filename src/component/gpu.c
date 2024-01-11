@@ -1,6 +1,18 @@
 #include "gpu.h"
 
+// Lua API
 
+int ocd_L_gpu_bind(lua_State* L, comp_gpu* gpu) {
+    printf("BIND FROM %p\n",gpu);
+    return 0;
+}
+
+comp_method_reg gpu_vtable[] = {
+    {"bind",ocd_L_gpu_bind},
+    {NULL,NULL},
+};
+
+// C API
 
 int ocd_CL_push_gpu(lua_State* L, comp_gpu* gpu) {
     lua_newtable(L);
@@ -11,8 +23,16 @@ int ocd_CL_push_gpu(lua_State* L, comp_gpu* gpu) {
 
 int ocd_open_comp_gpu(lua_State* L) {
     luaL_newmetatable(L,COMP_COMP_MT);
-    lua_pop(L,-1);
+    lua_pop(L,1);
     return 0;
+}
+
+comp_gpu* comp_gpu_new(void) {
+    comp_gpu* gpu = (comp_gpu*)malloc(sizeof(comp_gpu));
+    gpu->address = comp_addr_new();
+    gpu->vtable  = gpu_vtable;
+    gpu->buffers = malloc(sizeof(gpu_buffer*)*GPU_N_BUFFERS);
+    return gpu;
 }
 
 // GPU

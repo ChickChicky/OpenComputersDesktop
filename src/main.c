@@ -19,10 +19,7 @@ int main(int argc, char** argv) {
         lua_pop(L, 1);
     }
 
-    comp_addr addr = comp_addr_new();
-    char* a = (char*)malloc(37);
-    comp_addr_str(&addr,a);
-    printf("%s\n",a);
+    comp_gpu* gpu = comp_gpu_new();
 
     return 0;
 }

@@ -16,6 +16,15 @@
    component methods */
 #define COMP_METHOD_MT "OCD::Component::Method"
 
+typedef int(*comp_method)(lua_State*,void*);
+
+struct comp_method_reg {
+    const char* name;
+    comp_method func;
+};
+
+typedef struct comp_method_reg comp_method_reg;
+
 
 
 struct comp_addr {
@@ -45,10 +54,10 @@ struct comp_env {
 /* A component environment (will probably replaced by computer case at some point) */
 typedef struct comp_env comp_env;
 
-
-
 struct comp_base {
     comp_addr address;
+    comp_method_reg* vtable;
+    const char* type;
 };
 
 /* A structure representing the base data inside all components */
@@ -60,10 +69,23 @@ typedef struct comp_base comp_base;
 int ocd_open_complib(lua_State* L);
 
 
-
+/* Generates a new component environment */
 comp_env* comp_env_new();
+/* Destroys a component environment
+   (does not affect the components themselves) */
+void comp_env_free(comp_env* env);
+/* Sets the component at the provided slot,
+   returns 0 if the component was assigned, 
+   anything else otherwise */
+int comp_env_set(comp_env* env, void* comp, size_t slot);
 
-comp_addr comp_get_comp_at(comp_env* env, size_t slot);
+/* Gets the slot data of the component at the provided slot */
+comp_slot* comp_get_comp_at(comp_env* env, size_t slot);
+/* Gets the address of the provided component */
+comp_addr get_comp_addr(comp_env* env, void* comp);
+
+/* Retrieves a component addres from an UUID */
+comp_addr comp_addr_from_string(const char* addr);
 /* Generates a new random component address */
 comp_addr comp_addr_new(void);
 /* Writes a component address into a string in the UUID format 8-4-4-4-12 (36 chars) */
