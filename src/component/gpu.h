@@ -17,8 +17,9 @@ typedef struct gpu_buffer gpu_buffer;
 struct comp_gpu {
     comp_addr address;
     comp_method_reg* vtable;
+    const char* type;
     comp_addr bound;
-    gpu_buffer* buffers[GPU_N_BUFFERS];
+    gpu_buffer** buffers;
 };
 
 /* A GPU component that can live in a computer */
@@ -27,8 +28,10 @@ typedef struct comp_gpu comp_gpu;
 /* Loads the GPU Lua interface */
 int ocd_open_comp_gpu(lua_State* L);
 
-/* Pushes a GPU on the Lua stack */
-int ocd_CL_push_gpu(lua_State* L, comp_gpu* gpu);
+/* Creates a new GPU instance */
+comp_gpu* comp_gpu_new(void);
+/* Frees a previously created GPU */
+void comp_gpu_free(comp_gpu* gpu);
 
 /* Allocates a new screen buffer for a GPU */
 gpu_buffer* gpu_buffer_new(uint16_t width, uint16_t height);

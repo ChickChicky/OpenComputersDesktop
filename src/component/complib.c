@@ -74,7 +74,7 @@ comp_addr comp_addr_from_string(const char* addr) {
             default:
                 return (comp_addr){0,0}; // return a NULL component address in case of a non-hex character
         }
-        *(j >= 64 ? &low : &high) |= h<<(64-(j%64));
+        *(j >= 64 ? &low : &high) |= h<<(64-(j%64)); // TODO: make this cleaner :p
         j += 4;
     }
     return (comp_addr){.high=high,.low=low};
@@ -133,6 +133,10 @@ void comp_env_free(comp_env* env) {
 
 static int luaB_next (lua_State *L) {
     luaL_checktype(L, 1, LUA_TTABLE);
+    printf("SZ: %i\n",lua_gettop(L));
+    for (size_t i = 0; i < lua_gettop(L); i++) {
+        printf("    %s\n",lua_typename(L, lua_type(L,(i))));
+    }
     lua_settop(L, 2);  /* create a 2nd argument if there isn't one */
     if (lua_next(L, 1))
         return 2;
@@ -154,7 +158,7 @@ int ocd_L_comp_list(lua_State* L) {
                 comp_base* comp = (comp_base*)slot->component;
                 comp_addr_str(&comp->address,addr);
                 lua_pushstring(L,comp->type);
-                lua_setfield(L,-1,addr);
+                lua_setfield(L,-2,addr);
             }
         }
     }
@@ -166,6 +170,10 @@ int ocd_L_comp_method_call(lua_State* L) {
     luaL_checktype(L,1,LUA_TTABLE);
     return 0;
 }
+
+static const luaL_Reg compMT[] = {
+    {NULL,NULL},
+};
 
 static const luaL_Reg compMethodMT[] = {
     {"__call",ocd_L_comp_method_call},
@@ -185,9 +193,16 @@ static const luaL_Reg compLib[] = {
 
 int ocd_open_complib(lua_State* L) {
     luaL_newlib(L, compLib);
+    
     luaL_newmetatable(L,COMP_COMPLIST_MT);
     luaL_setfuncs(L, compListMT, 0);
-    ocd_open_comp_gpu(L);
     lua_pop(L,1);
+
+    luaL_newmetatable(L,COMP_COMP_MT);
+    luaL_setfuncs(L, compMT, 0);
+    lua_pop(L,1);
+    
+    ocd_open_comp_gpu(L);
+    
     return 1;
 }
